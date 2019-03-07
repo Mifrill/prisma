@@ -6,6 +6,7 @@ use prisma_common::PrismaResult;
 use prisma_models::prelude::*;
 use r2d2_sqlite3::SqliteConnectionManager;
 use std::collections::HashSet;
+use sqlite::{Statement, Type, Value};
 
 use crate::SERVER_ROOT;
 
@@ -78,32 +79,34 @@ impl Sqlite {
         result
     }
 
-    // /// Converter function to wrap the limited set of types in SQLite to a
-    // /// richer PrismaValue.
-    // fn fetch_value(typ: TypeIdentifier, row: &Row, i: usize) -> PrismaValue {
-    //     let result = match typ {
-    //         TypeIdentifier::String => row.get_checked(i).map(|val| PrismaValue::String(val)),
-    //         TypeIdentifier::GraphQLID => row.get_checked(i).map(|val| PrismaValue::GraphqlId(val)),
-    //         TypeIdentifier::UUID => row.get_checked(i).map(|val| PrismaValue::Uuid(val)),
-    //         TypeIdentifier::Int => row.get_checked(i).map(|val| PrismaValue::Int(val)),
-    //         TypeIdentifier::Boolean => row.get_checked(i).map(|val| PrismaValue::Boolean(val)),
-    //         TypeIdentifier::Enum => row.get_checked(i).map(|val| PrismaValue::Enum(val)),
-    //         TypeIdentifier::Json => row.get_checked(i).map(|val| PrismaValue::Json(val)),
-    //         TypeIdentifier::DateTime => row.get_checked(i).map(|ts: i64| {
-    //             let nsecs = ((ts % 1000) * 1_000_000) as u32;
-    //             let secs = (ts / 1000) as i64;
-    //             let naive = chrono::NaiveDateTime::from_timestamp(secs, nsecs);
-    //             let datetime: DateTime<Utc> = DateTime::from_utc(naive, Utc);
+    /// Converter function to wrap the limited set of types in SQLite to a
+    /// richer PrismaValue.
+    fn fetch_value(typ: TypeIdentifier, value: &Statement, i: usize) -> PrismaValue {
+        // let result = match typ {
+        //     TypeIdentifier::String => row.get_checked(i).map(|val| PrismaValue::String(val)),
+        //     TypeIdentifier::GraphQLID => row.get_checked(i).map(|val| PrismaValue::GraphqlId(val)),
+        //     TypeIdentifier::UUID => row.get_checked(i).map(|val| PrismaValue::Uuid(val)),
+        //     TypeIdentifier::Int => row.get_checked(i).map(|val| PrismaValue::Int(val)),
+        //     TypeIdentifier::Boolean => row.get_checked(i).map(|val| PrismaValue::Boolean(val)),
+        //     TypeIdentifier::Enum => row.get_checked(i).map(|val| PrismaValue::Enum(val)),
+        //     TypeIdentifier::Json => row.get_checked(i).map(|val| PrismaValue::Json(val)),
+        //     TypeIdentifier::DateTime => row.get_checked(i).map(|ts: i64| {
+        //         let nsecs = ((ts % 1000) * 1_000_000) as u32;
+        //         let secs = (ts / 1000) as i64;
+        //         let naive = chrono::NaiveDateTime::from_timestamp(secs, nsecs);
+        //         let datetime: DateTime<Utc> = DateTime::from_utc(naive, Utc);
 
-    //             PrismaValue::DateTime(datetime.to_rfc3339())
-    //         }),
-    //         TypeIdentifier::Relation => panic!("We should not have a Relation here!"),
-    //         TypeIdentifier::Float => row.get_checked(i).map(|val: f64| PrismaValue::Float(val as f32)),
-    //     };
+        //         PrismaValue::DateTime(datetime.to_rfc3339())
+        //     }),
+        //     TypeIdentifier::Relation => panic!("We should not have a Relation here!"),
+        //     TypeIdentifier::Float => row.get_checked(i).map(|val: f64| PrismaValue::Float(val as f32)),
+        // };
 
-    //     result.unwrap_or_else(|e| match e {
-    //         rusqlite::Error::InvalidColumnType(_, rusqlite::types::Type::Null) => PrismaValue::Null,
-    //         _ => panic!(e),
-    //     })
-    // }
+        // result.unwrap_or_else(|e| match e {
+        //     rusqlite::Error::InvalidColumnType(_, rusqlite::types::Type::Null) => PrismaValue::Null,
+        //     _ => panic!(e),
+        // })
+
+        unimplemented!()
+    }
 }
